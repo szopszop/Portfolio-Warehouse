@@ -11,12 +11,12 @@ import java.util.UUID;
 public class UserProfile {
 
     private UUID userProfileId;
-    private String userName;
+    private String username;
     private String userProfileImageLink;   // S3 key
 
-    public UserProfile(UUID userProfileId, String userName, String userProfileImageLink) {
+    public UserProfile(UUID userProfileId, String username, String userProfileImageLink) {
         this.userProfileId = userProfileId;
-        this.userName = userName;
+        this.username = username;
         this.userProfileImageLink = userProfileImageLink;
     }
 
@@ -24,8 +24,8 @@ public class UserProfile {
         return userProfileId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public Optional<String> getUserProfileImageLink() {
@@ -38,12 +38,12 @@ public class UserProfile {
         if (o == null || getClass() != o.getClass()) return false;
         UserProfile that = (UserProfile) o;
         return Objects.equals(userProfileId, that.userProfileId) &&
-                Objects.equals(userName, that.userName) &&
+                Objects.equals(username, that.username) &&
                 Objects.equals(userProfileImageLink, that.userProfileImageLink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userProfileId, userName, userProfileImageLink);
+        return Objects.hash(userProfileId, username, userProfileImageLink);
     }
 }
