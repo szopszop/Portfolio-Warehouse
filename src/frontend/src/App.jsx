@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import './App.css'
 import axios from "axios";
+import Dropzone from "./components/Dropzone/Dropzone.jsx";
 
 const UserProfiles = () => {
 
@@ -17,11 +18,16 @@ const UserProfiles = () => {
         fetchUserProfiles();
     }, [])
 
-    return userProfiles.map( (userProfile, index) => {
+    return userProfiles.map( (userProfile) => {
 
-        return (<div>
+        return (<div key={userProfile.userProfileId}>
+            <br />
+            <br />
+
             <h1>{userProfile.username}</h1>
             <p>{userProfile.userProfileId}</p>
+            <Dropzone />
+            <br />
         </div>)
     })
 }
