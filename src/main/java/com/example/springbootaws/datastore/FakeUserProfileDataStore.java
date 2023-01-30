@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class UserProfileDataStore {
+public class FakeUserProfileDataStore {
 
     private static final List<UserProfile> USER_PROFILES = new ArrayList<>();
 
