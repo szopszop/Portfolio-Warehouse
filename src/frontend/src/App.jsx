@@ -26,7 +26,7 @@ const UserProfiles = () => {
 
             <h1>{userProfile.username}</h1>
             <p>{userProfile.userProfileId}</p>
-            <Dropzone />
+            <Dropzone userProfileId={userProfile.userProfileId}/>
             <br />
         </div>)
     })
