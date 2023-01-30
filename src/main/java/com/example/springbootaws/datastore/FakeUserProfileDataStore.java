@@ -23,7 +23,7 @@ public class FakeUserProfileDataStore {
         return USER_PROFILES;
     }
 
-    public Optional<UserProfile> getSingleUserProfile(UUID uuid) {
+    public Optional<UserProfile> getUserProfile(UUID uuid) {
         return USER_PROFILES
                 .stream()
                 .filter(profileId -> profileId.getUserProfileId().equals(uuid))

@@ -2,7 +2,6 @@ package com.example.springbootaws.profile;
 
 import com.example.springbootaws.bucket.BucketName;
 import com.example.springbootaws.filestore.FileStore;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,14 +24,12 @@ public class UserProfileService {
     }
 
     List<UserProfile> getUserProfiles() {
-        return userProfileDataAccessService.getUserProfiles();
+        return userProfileDataAccessService.getAllUserProfiles();
     }
 
     public void uploadUserProfileImage(UUID userProfileId, MultipartFile file) {
         if (isFileNotEmpty(file) && isFileAnImage(file) && isUserInDatabase(userProfileId)) {
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("Content-Type", file.getContentType());
-            metadata.put("Content-Length", String.valueOf(file.getSize()));
+            Map<String, String> metadata = extractMetadata(file);
             String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), userProfileId);
             String filename = String.format("%s-%s", file.getName(), UUID.randomUUID());
             try {
@@ -60,11 +57,17 @@ public class UserProfileService {
     }
 
     private boolean isUserInDatabase(UUID userProfileId) {
-        if (userProfileDataAccessService.getSingleUserProfile(userProfileId).isEmpty()) {
+        if (userProfileDataAccessService.getUserProfile(userProfileId).isEmpty()) {
             throw new IllegalStateException("User not found!");
         } else {
             return true;
         }
     }
 
+    private Map<String, String> extractMetadata(MultipartFile file) {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+        return metadata;
+    }
 }

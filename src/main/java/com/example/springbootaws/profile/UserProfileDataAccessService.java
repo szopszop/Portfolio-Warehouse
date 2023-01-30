@@ -18,11 +18,11 @@ public class UserProfileDataAccessService {
         this.fakeUserProfileDataStore = fakeUserProfileDataStore;
     }
 
-    List<UserProfile> getUserProfiles() {
+    List<UserProfile> getAllUserProfiles() {
         return fakeUserProfileDataStore.getUserProfiles();
     }
 
-    Optional<UserProfile> getSingleUserProfile(UUID userProfileId) {
-        fakeUserProfileDataStore.getSingleUserProfile(userProfileId)
+    Optional<UserProfile> getUserProfile(UUID userProfileId) {
+        return fakeUserProfileDataStore.getUserProfile(userProfileId);
     }
 }
