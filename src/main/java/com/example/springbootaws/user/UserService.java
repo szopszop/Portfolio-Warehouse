@@ -1,4 +1,4 @@
-package com.example.springbootaws.profile;
+package com.example.springbootaws.user;
 
 import com.example.springbootaws.bucket.BucketName;
 import com.example.springbootaws.filestore.FileStore;
@@ -11,25 +11,25 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class UserProfileService {
+public class UserService {
 
-    private final UserProfileDataAccessService userProfileDataAccessService;
+    private final UserRepository userRepository;
     private final FileStore fileStore;
 
     @Autowired
-    public UserProfileService(UserProfileDataAccessService userProfileDataAccessService, FileStore fileStore) {
-        this.userProfileDataAccessService = userProfileDataAccessService;
+    public UserService(UserRepository userRepository, FileStore fileStore) {
+        this.userRepository = userRepository;
         this.fileStore = fileStore;
     }
 
-    List<UserProfile> getAllUserProfiles() {
-        return userProfileDataAccessService.getAllUserProfiles();
+    List<User> getAllUserProfiles() {
+        return userRepository.findAllByUsernameExists();
     }
 
     public void uploadUserProfileImage(UUID userProfileId, MultipartFile file) {
         if (isFileNotEmpty(file) && isFileAnImage(file) && isUserInDatabase(userProfileId)) {
             Map<String, String> metadata = extractMetadata(file);
-            UserProfile user = userProfileDataAccessService.getUserProfile(userProfileId);
+            User user = userRepository.findUserByUserProfileId(userProfileId);
             String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getUserProfileId());
             String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
             try {
@@ -62,15 +62,15 @@ public class UserProfileService {
     }
 
     private boolean isUserInDatabase(UUID userProfileId) {
-        if (userProfileDataAccessService.getUserProfile(userProfileId).getClass() != UserProfile.class) {
+        if (userRepository.findUserByUserProfileId(userProfileId).getClass() != User.class) {
             throw new IllegalStateException("User not found!");
         } else {
             return true;
         }
     }
 
-    private UserProfile getUserProfile(UUID userProfileId) {
-        return userProfileDataAccessService.getUserProfile(userProfileId);
+    private User getUserProfile(UUID userProfileId) {
+        return userRepository.findUserByUserProfileId(userProfileId);
     }
 
     private Map<String, String> extractMetadata(MultipartFile file) {
@@ -81,7 +81,7 @@ public class UserProfileService {
     }
 
     public byte[] downloadUserProfileImage(UUID userProfileId) {
-        UserProfile user = getUserProfile(userProfileId);
+        User user = getUserProfile(userProfileId);
         String path = String.format("%s/%s",
                 BucketName.PROFILE_IMAGE.getBucketName(),
                 user.getUserProfileId());

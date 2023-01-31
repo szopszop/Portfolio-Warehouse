@@ -13,16 +13,16 @@ import java.util.UUID;
 @CrossOrigin("http://localhost:5173/")
 public class UserControllerImpl implements UserController {
 
-    private final UserProfileService userProfileService;
+    private final UserService userService;
 
     @Autowired
-    public UserControllerImpl(UserProfileService userProfileService) {
-        this.userProfileService = userProfileService;
+    public UserControllerImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public List<User> getUserProfiles() {
-        return userProfileService.getAllUserProfiles();
+        return userService.getAllUserProfiles();
     }
 
     @PostMapping(
@@ -32,12 +32,12 @@ public class UserControllerImpl implements UserController {
     )
     public void uploadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId,
                                        @RequestParam("imageFile")MultipartFile imageFile) {
-        userProfileService.uploadUserProfileImage(userProfileId, imageFile);
+        userService.uploadUserProfileImage(userProfileId, imageFile);
     }
 
     @GetMapping("{userProfileId}/image/download")
     public byte[] downloadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId) {
-        return userProfileService.downloadUserProfileImage(userProfileId);
+        return userService.downloadUserProfileImage(userProfileId);
     }
 
 }
