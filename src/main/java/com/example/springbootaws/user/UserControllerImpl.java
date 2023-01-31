@@ -1,4 +1,4 @@
-package com.example.springbootaws.profile;
+package com.example.springbootaws.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,17 +11,17 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/user-profile")
 @CrossOrigin("http://localhost:5173/")
-public class UserProfileController {
+public class UserControllerImpl implements UserController {
 
     private final UserProfileService userProfileService;
 
     @Autowired
-    public UserProfileController(UserProfileService userProfileService) {
+    public UserControllerImpl(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
     }
 
     @GetMapping
-    public List<UserProfile> getUserProfiles() {
+    public List<User> getUserProfiles() {
         return userProfileService.getAllUserProfiles();
     }
 

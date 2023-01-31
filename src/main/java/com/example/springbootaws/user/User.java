@@ -1,24 +1,30 @@
-package com.example.springbootaws.profile;
+package com.example.springbootaws.user;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-
+@Entity
 @Setter
-public class UserProfile {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
+public class User {
 
-    private final UUID userProfileId;
-    private final String username;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID userProfileId;
+    private String username;
     private String userProfileImageLink;   // S3 key
 
-    public UserProfile(UUID userProfileId, String username, String userProfileImageLink) {
-        this.userProfileId = userProfileId;
-        this.username = username;
-        this.userProfileImageLink = userProfileImageLink;
-    }
+
+
+
 
     public UUID getUserProfileId() {
         return userProfileId;
@@ -36,7 +42,7 @@ public class UserProfile {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserProfile that = (UserProfile) o;
+        User that = (User) o;
         return Objects.equals(userProfileId, that.userProfileId) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(userProfileImageLink, that.userProfileImageLink);
@@ -47,3 +53,4 @@ public class UserProfile {
         return Objects.hash(userProfileId, username, userProfileImageLink);
     }
 }
+
