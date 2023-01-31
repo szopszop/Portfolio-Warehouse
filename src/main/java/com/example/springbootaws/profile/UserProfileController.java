@@ -22,7 +22,7 @@ public class UserProfileController {
 
     @GetMapping
     public List<UserProfile> getUserProfiles() {
-        return userProfileService.getUserProfiles();
+        return userProfileService.getAllUserProfiles();
     }
 
     @PostMapping(

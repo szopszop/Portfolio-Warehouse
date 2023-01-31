@@ -2,14 +2,13 @@ package com.example.springbootaws.profile;
 
 import com.example.springbootaws.bucket.BucketName;
 import com.example.springbootaws.filestore.FileStore;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
-
-import static org.springframework.util.MimeTypeUtils.*;
 
 @Service
 public class UserProfileService {
@@ -23,7 +22,7 @@ public class UserProfileService {
         this.fileStore = fileStore;
     }
 
-    List<UserProfile> getUserProfiles() {
+    List<UserProfile> getAllUserProfiles() {
         return userProfileDataAccessService.getAllUserProfiles();
     }
 
@@ -35,29 +34,34 @@ public class UserProfileService {
             try {
                 fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
             } catch (IOException e) {
-                throw new IllegalStateException(e);
+                throw new IllegalStateException(e + "EEEEEEEEEEEEEEERROR");
             }
         }
     }
 
     private boolean isFileNotEmpty(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new IllegalStateException("File is empty!");
+            throw new IllegalStateException("File is empty! [ " + file.getSize() + " ]");
         } else {
             return true;
         }
     }
 
     private boolean isFileAnImage(MultipartFile file) {
-        if (!Arrays.asList(IMAGE_JPEG, IMAGE_PNG, IMAGE_GIF).contains(file.getContentType())) {
-            throw new IllegalStateException("File must be an image!");
+        if(!Arrays.asList(
+                ContentType.IMAGE_JPEG.getMimeType(),
+                ContentType.IMAGE_PNG.getMimeType(),
+                ContentType.IMAGE_GIF.getMimeType())
+                .contains(file.getContentType())) {
+            throw new IllegalStateException("File must be an image! [ " + file.getContentType() + " ]");
         } else {
             return true;
         }
     }
 
     private boolean isUserInDatabase(UUID userProfileId) {
-        if (userProfileDataAccessService.getUserProfile(userProfileId).isEmpty()) {
+        System.out.println(userProfileId + "given");
+        if (userProfileDataAccessService.getUserProfile(userProfileId).getClass() != UserProfile.class) {
             throw new IllegalStateException("User not found!");
         } else {
             return true;
@@ -69,5 +73,9 @@ public class UserProfileService {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         return metadata;
+    }
+
+    private UserProfile getUserProfile(UUID userProfileId) {
+        return userProfileDataAccessService.getUserProfile(userProfileId);
     }
 }

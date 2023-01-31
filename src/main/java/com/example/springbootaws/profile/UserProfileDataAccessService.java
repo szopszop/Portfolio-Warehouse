@@ -22,7 +22,7 @@ public class UserProfileDataAccessService {
         return fakeUserProfileDataStore.getUserProfiles();
     }
 
-    Optional<UserProfile> getUserProfile(UUID userProfileId) {
+    UserProfile getUserProfile(UUID userProfileId) {
         return fakeUserProfileDataStore.getUserProfile(userProfileId);
     }
 }

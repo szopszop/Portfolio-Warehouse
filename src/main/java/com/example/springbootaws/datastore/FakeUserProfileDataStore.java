@@ -15,19 +15,23 @@ public class FakeUserProfileDataStore {
 
 
     static {
-        USER_PROFILES.add(new UserProfile(UUID.randomUUID(), "SzymonTracz", null));
-        USER_PROFILES.add(new UserProfile(UUID.randomUUID(), "JanetJackson", null));
+        USER_PROFILES.add(new UserProfile(UUID.fromString("ab1378cb-e8ea-4d9b-b97e-604acdde3f14")
+                , "Szymon Tracz", null));
+        USER_PROFILES.add(new UserProfile(UUID.fromString("911e32a4-659f-457c-9445-704d6fc8c92a")
+                , "Janet Jackson", null));
     }
 
     public List<UserProfile> getUserProfiles() {
         return USER_PROFILES;
     }
 
-    public Optional<UserProfile> getUserProfile(UUID uuid) {
+    public UserProfile getUserProfile(UUID userProfileId) {
         return USER_PROFILES
                 .stream()
-                .filter(profileId -> profileId.getUserProfileId().equals(uuid))
-                .findAny();
+                .filter(profile -> profile.getUserProfileId().equals(userProfileId))
+                .findAny()
+                .orElseThrow(() -> new IllegalStateException(
+                        String.format("User profile %s not found!", userProfileId)));
     }
 
 }
