@@ -1,10 +1,8 @@
-package com.example.springbootaws.profile;
+package com.example.springbootaws.user;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class UserProfileServiceTest {
+class UserServiceTest {
 
     @Test
     void getUserProfiles() {
