@@ -1,4 +1,4 @@
-package com.example.springbootaws.filestore;
+package com.example.springbootaws.amazon.filestore;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;

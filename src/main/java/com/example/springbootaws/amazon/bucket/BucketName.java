@@ -1,4 +1,4 @@
-package com.example.springbootaws.bucket;
+package com.example.springbootaws.amazon.bucket;
 
 public enum BucketName {
     PROFILE_IMAGE("spring-aws-image-upload-123");
