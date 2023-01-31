@@ -10,8 +10,8 @@ import java.util.UUID;
 @Setter
 public class UserProfile {
 
-    private UUID userProfileId;
-    private String username;
+    private final UUID userProfileId;
+    private final String username;
     private String userProfileImageLink;   // S3 key
 
     public UserProfile(UUID userProfileId, String username, String userProfileImageLink) {

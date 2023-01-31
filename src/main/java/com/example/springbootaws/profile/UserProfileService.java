@@ -29,12 +29,14 @@ public class UserProfileService {
     public void uploadUserProfileImage(UUID userProfileId, MultipartFile file) {
         if (isFileNotEmpty(file) && isFileAnImage(file) && isUserInDatabase(userProfileId)) {
             Map<String, String> metadata = extractMetadata(file);
-            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), userProfileId);
-            String filename = String.format("%s-%s", file.getName(), UUID.randomUUID());
+            UserProfile user = userProfileDataAccessService.getUserProfile(userProfileId);
+            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getUserProfileId());
+            String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
             try {
                 fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
+                user.setUserProfileImageLink(filename);
             } catch (IOException e) {
-                throw new IllegalStateException(e + "EEEEEEEEEEEEEEERROR");
+                throw new IllegalStateException(e);
             }
         }
     }
@@ -60,12 +62,15 @@ public class UserProfileService {
     }
 
     private boolean isUserInDatabase(UUID userProfileId) {
-        System.out.println(userProfileId + "given");
         if (userProfileDataAccessService.getUserProfile(userProfileId).getClass() != UserProfile.class) {
             throw new IllegalStateException("User not found!");
         } else {
             return true;
         }
+    }
+
+    private UserProfile getUserProfile(UUID userProfileId) {
+        return userProfileDataAccessService.getUserProfile(userProfileId);
     }
 
     private Map<String, String> extractMetadata(MultipartFile file) {
@@ -75,7 +80,14 @@ public class UserProfileService {
         return metadata;
     }
 
-    private UserProfile getUserProfile(UUID userProfileId) {
-        return userProfileDataAccessService.getUserProfile(userProfileId);
+    public byte[] downloadUserProfileImage(UUID userProfileId) {
+        UserProfile user = getUserProfile(userProfileId);
+        String path = String.format("%s/%s",
+                BucketName.PROFILE_IMAGE.getBucketName(),
+                user.getUserProfileId());
+
+        return user.getUserProfileImageLink()
+                .map(key -> fileStore.download(path, key))
+                .orElse(new byte[0]);
     }
 }

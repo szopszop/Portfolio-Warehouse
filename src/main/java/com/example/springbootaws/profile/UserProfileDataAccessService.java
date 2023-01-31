@@ -22,7 +22,7 @@ public class UserProfileDataAccessService {
         return fakeUserProfileDataStore.getUserProfiles();
     }
 
-    UserProfile getUserProfile(UUID userProfileId) {
+    UserProfile getUserProfile(UUID userProfileId) throws IllegalStateException {
         return fakeUserProfileDataStore.getUserProfile(userProfileId);
     }
 }
