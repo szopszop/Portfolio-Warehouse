@@ -1,5 +1,6 @@
 package com.example.springbootaws.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,18 @@ public class User {
     private String username;
     private String userProfileImageLink;   // S3 key
 
+    @JsonIgnore
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
+    public enum Sex {
+        MALE, FEMALE
+    }
+
+    public enum Provider {
+        LOCAL, GOOGLE
+    }
 
 
 
