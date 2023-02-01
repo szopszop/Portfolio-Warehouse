@@ -1,0 +1,17 @@
+spring.servlet.multipart.max-file-size=5MB
+spring.datasource.type=org.springframework.jdbc.datasource.SimpleDriverDataSource
+
+
+spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/<YOUR_DATABASE_NAME>
+spring.datasource.username=<YOUR_DATABASE_USERNAME>
+spring.datasource.password=<YOUR_DATABASE_PASSWORD>
+
+# jpa params
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.defer-datasource-initialization=true
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.sql.init.mode=always

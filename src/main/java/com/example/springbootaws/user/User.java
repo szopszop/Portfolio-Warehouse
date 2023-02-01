@@ -9,15 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "_user")
 public class User  implements UserDetails {
 
     @Id
@@ -62,6 +58,14 @@ public class User  implements UserDetails {
         return userProfileId;
     }
 
+    public Optional<String> getUserProfileImageLink() {
+        return Optional.ofNullable(userProfileImageLink);
+    }
+
+    public void setUserProfileImageLink(String userProfileImageLink) {
+        this.userProfileImageLink = userProfileImageLink;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -92,9 +96,6 @@ public class User  implements UserDetails {
         return true;
     }
 
-    public Optional<String> getUserProfileImageLink() {
-        return Optional.ofNullable(userProfileImageLink);
-    }
 
     @Override
     public boolean equals(Object o) {
