@@ -2,27 +2,29 @@ package com.example.springbootaws.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-@Entity
+@Getter
 @Setter
+@ToString
+@RequiredArgsConstructor
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "users")
-public class User {
+public class User  implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userProfileId;
     private String username;
     private String email;
-
     private String userProfileImageLink;   // S3 key
 
     @JsonIgnore
@@ -31,9 +33,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public enum Sex {
-        MALE, FEMALE;
+    public enum Role {
+        USER, ADMIN
     }
 
 
@@ -41,6 +45,14 @@ public class User {
         LOCAL, GOOGLE;
     }
 
+    public enum Sex {
+        MALE, FEMALE;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
     public String getEmail() {
         return email;
@@ -50,8 +62,34 @@ public class User {
         return userProfileId;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public Optional<String> getUserProfileImageLink() {

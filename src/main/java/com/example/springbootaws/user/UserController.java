@@ -1,19 +1,38 @@
 package com.example.springbootaws.user;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.example.springbootaws.security.MessageResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.UUID;
 
-@Service
-public interface UserController {
+@RestController
+@RequestMapping("api/v1/user")
+@CrossOrigin("http://localhost:5173/")
+public class UserController {
 
-    List<User> getUserProfiles();
-    void uploadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId,
-                                       @RequestParam("imageFile") MultipartFile imageFile);
-    byte[] downloadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId);
+    private final UserService userService;
+    @Autowired
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping(
+            path = "{userProfileId}/image/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<MessageResponse> uploadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId,
+                                                                  @RequestParam("imageFile")MultipartFile imageFile) {
+        return userService.uploadProfilePictureValidation(userProfileId, imageFile);
+    }
+
+    @GetMapping("{userProfileId}/image/download")
+    public byte[] downloadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId) {
+        return userService.downloadUserProfileImage(userProfileId);
+    }
 
 }

@@ -2,7 +2,7 @@ package com.example.springbootaws.user;
 
 import com.example.springbootaws.amazon.bucket.BucketName;
 import com.example.springbootaws.amazon.filestore.FileStore;
-import com.example.springbootaws.security.auth.MessageResponse;
+import com.example.springbootaws.security.MessageResponse;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +18,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final FileStore fileStore;
 
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, FileStore fileStore) {
         this.userRepository = userRepository;
         this.fileStore = fileStore;
     }
 
-    @Override
-    public List<User> getAllUserProfiles() {
-        return userRepository.findAllByUsernameExists();
-    }
 
     @Override
     public ResponseEntity<MessageResponse> uploadProfilePictureValidation(UUID userProfileId, MultipartFile file) {
