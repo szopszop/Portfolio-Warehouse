@@ -21,6 +21,9 @@ const UserProfiles = () => {
     return userProfiles.map( (userProfile) => {
 
         return (<div key={userProfile.userProfileId}>
+            {userProfile.userProfileImageLink ?
+                <img className="profile-picture" src={`http://localhost:8080/api/v1/user-profile/${userProfile.userProfileId}/image/download`}
+                     alt="profile-picture"/> : null}
             <br />
             <br />
 
