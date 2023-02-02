@@ -3,6 +3,7 @@ package com.example.springbootaws.user;
 import com.example.springbootaws.amazon.bucket.BucketName;
 import com.example.springbootaws.amazon.filestore.FileStore;
 import com.example.springbootaws.security.MessageResponse;
+import jakarta.transaction.Transactional;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public ResponseEntity<MessageResponse> uploadProfilePictureValidation(UUID userProfileId, MultipartFile file) {
         if (isFileNotEmpty(file) && isFileAnImage(file) &&
                 userRepository.findUserByUserProfileId(userProfileId).isPresent()) {
