@@ -1,4 +1,4 @@
-package com.example.springbootaws.security;
+package com.example.springbootaws.security.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

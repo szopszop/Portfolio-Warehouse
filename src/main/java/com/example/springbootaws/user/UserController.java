@@ -1,6 +1,6 @@
 package com.example.springbootaws.user;
 
-import com.example.springbootaws.security.MessageResponse;
+import com.example.springbootaws.security.payload.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
