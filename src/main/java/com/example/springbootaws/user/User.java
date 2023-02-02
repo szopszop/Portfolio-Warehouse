@@ -23,7 +23,6 @@ public class User  implements UserDetails {
     private String username;
     private String email;
     private String userProfileImageLink;   // S3 key
-
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -36,13 +35,12 @@ public class User  implements UserDetails {
         USER, ADMIN
     }
 
-
     public enum Provider {
-        LOCAL, GOOGLE;
+        LOCAL, GOOGLE
     }
 
     public enum Sex {
-        MALE, FEMALE;
+        MALE, FEMALE
     }
 
     @Override
