@@ -21,7 +21,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
@@ -35,25 +35,17 @@ import java.io.IOException;
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
-    @Autowired
     AuthEntryPointJwt unauthorizedHandler;
-
-    @Autowired
     UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     CustomOAuth2UserService oAuth2UserService;
-
-    @Autowired
     JwtUtils jwtUtils;
 
 
     private static final String ADMIN = User.Role.ADMIN.toString();
     private static final String USER = User.Role.USER.toString();
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
