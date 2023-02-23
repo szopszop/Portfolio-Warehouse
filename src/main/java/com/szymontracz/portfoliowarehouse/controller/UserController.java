@@ -2,8 +2,7 @@ package com.szymontracz.portfoliowarehouse.controller;
 
 import com.szymontracz.portfoliowarehouse.security.MessageResponse;
 import com.szymontracz.portfoliowarehouse.service.UserService;
-import com.szymontracz.portfoliowarehouse.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/user")
 @CrossOrigin("http://localhost:5173/")
 public class UserController {
 
     private final UserService userService;
-    @Autowired
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
+
 
     @PostMapping(
             path = "{userProfileId}/image/upload",
