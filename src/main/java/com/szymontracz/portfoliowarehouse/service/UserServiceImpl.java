@@ -11,6 +11,8 @@ import com.szymontracz.portfoliowarehouse.security.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.entity.ContentType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,6 +76,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDto> getUserByEmail(String email) {
+        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByEmail(email).orElse(null)));
+    }
+
+    @Override
+    public Optional<UserDto> getUserByUsername(String username) {
+        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByUsername(username).orElse(null)));
+    }
+
+    @Override
     public UserDto saveNewUser(UserDto userDto) {
         return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
     }
@@ -110,5 +122,18 @@ public class UserServiceImpl implements UserService {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user;
+        if (userRepository.findByUsername(username).isPresent()) {
+            user = userRepository.findByUsername(username).get();
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
+        return new User(user.getId(), user.getUsername(), user.getEmail(),
+                Optional.of(user.getUserProfileImageLink().get()).orElse(null),
+                user.getPassword(), user.getRole());
     }
 }
