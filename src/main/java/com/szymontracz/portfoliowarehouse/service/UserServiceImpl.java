@@ -4,6 +4,8 @@ package com.szymontracz.portfoliowarehouse.service;
 import com.szymontracz.portfoliowarehouse.amazon.bucket.BucketName;
 import com.szymontracz.portfoliowarehouse.amazon.filestore.FileStore;
 import com.szymontracz.portfoliowarehouse.entity.User;
+import com.szymontracz.portfoliowarehouse.mapper.UserMapper;
+import com.szymontracz.portfoliowarehouse.model.UserDto;
 import com.szymontracz.portfoliowarehouse.repository.UserRepository;
 import com.szymontracz.portfoliowarehouse.security.MessageResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     private final FileStore fileStore;
     private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
 
 
 
@@ -62,6 +66,30 @@ public class UserServiceImpl implements UserService {
             return user.getUserProfileImageLink().map(key -> fileStore.download(path, key)).orElse(new byte[0]);
         }
         return new byte[0];
+    }
+
+    @Override
+    public Optional<UserDto> getUserById(UUID id) {
+        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findUserById(id).orElse(null)));
+    }
+
+    @Override
+    public UserDto saveNewUser(UserDto userDto) {
+        return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
+    }
+
+    @Override
+    public Optional<UserDto> updateUserById(UUID uuid, UserDto userDto) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Boolean deleteUserById(UUID userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+            return true;
+        }
+        return false;
     }
 
     private boolean isFileNotEmpty(MultipartFile file) {
