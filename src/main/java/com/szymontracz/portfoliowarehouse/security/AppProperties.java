@@ -1,4 +1,4 @@
-package com.example.springbootaws.security;
+package com.szymontracz.portfoliowarehouse.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

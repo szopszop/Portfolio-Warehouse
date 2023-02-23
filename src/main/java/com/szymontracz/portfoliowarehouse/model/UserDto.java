@@ -1,10 +1,6 @@
-package com.example.springbootaws.model;
+package com.szymontracz.portfoliowarehouse.model;
 
-import com.example.springbootaws.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
+import com.szymontracz.portfoliowarehouse.entity.User;
 import java.util.UUID;
 
 public class UserDto {

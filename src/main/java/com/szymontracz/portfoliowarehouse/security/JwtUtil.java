@@ -1,4 +1,4 @@
-package com.example.springbootaws.security;
+package com.szymontracz.portfoliowarehouse.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

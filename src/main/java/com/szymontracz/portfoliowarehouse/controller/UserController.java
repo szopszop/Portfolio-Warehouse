@@ -1,7 +1,8 @@
-package com.example.springbootaws.controller;
+package com.szymontracz.portfoliowarehouse.controller;
 
-import com.example.springbootaws.service.UserService;
-import com.example.springbootaws.service.UserServiceImpl;
+import com.szymontracz.portfoliowarehouse.security.MessageResponse;
+import com.szymontracz.portfoliowarehouse.service.UserService;
+import com.szymontracz.portfoliowarehouse.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

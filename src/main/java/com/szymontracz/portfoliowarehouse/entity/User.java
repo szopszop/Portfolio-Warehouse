@@ -1,4 +1,4 @@
-package com.example.springbootaws.entity;
+package com.szymontracz.portfoliowarehouse.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,9 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User  implements UserDetails {
+public class User implements UserDetails {
 
+    @jakarta.persistence.Id
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -38,6 +40,7 @@ public class User  implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
 
     public enum Role {
         USER, ADMIN

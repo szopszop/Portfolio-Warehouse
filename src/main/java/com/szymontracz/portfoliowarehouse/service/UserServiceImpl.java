@@ -1,12 +1,13 @@
-package com.example.springbootaws.service;
+package com.szymontracz.portfoliowarehouse.service;
 
-import com.amazonaws.services.pinpoint.model.MessageResponse;
-import com.example.springbootaws.amazon.bucket.BucketName;
-import com.example.springbootaws.amazon.filestore.FileStore;
-import com.example.springbootaws.entity.User;
-import com.example.springbootaws.repository.UserRepository;
+
+import com.szymontracz.portfoliowarehouse.amazon.bucket.BucketName;
+import com.szymontracz.portfoliowarehouse.amazon.filestore.FileStore;
+import com.szymontracz.portfoliowarehouse.entity.User;
+import com.szymontracz.portfoliowarehouse.repository.UserRepository;
+import com.szymontracz.portfoliowarehouse.security.MessageResponse;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.entity.ContentType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,17 +16,12 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final FileStore fileStore;
+    private final UserRepository userRepository;
 
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, FileStore fileStore) {
-        this.userRepository = userRepository;
-        this.fileStore = fileStore;
-    }
 
 
     @Override

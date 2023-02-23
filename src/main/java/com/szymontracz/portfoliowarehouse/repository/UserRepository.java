@@ -1,6 +1,6 @@
-package com.example.springbootaws.repository;
+package com.szymontracz.portfoliowarehouse.repository;
 
-import com.example.springbootaws.entity.User;
+import com.szymontracz.portfoliowarehouse.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

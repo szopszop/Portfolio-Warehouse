@@ -1,6 +1,6 @@
-package com.example.springbootaws.service;
+package com.szymontracz.portfoliowarehouse.service;
 
-import com.amazonaws.services.pinpoint.model.MessageResponse;
+import com.szymontracz.portfoliowarehouse.security.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

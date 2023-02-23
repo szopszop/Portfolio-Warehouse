@@ -1,4 +1,4 @@
-package com.example.springbootaws.amazon.config;
+package com.szymontracz.portfoliowarehouse.amazon.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

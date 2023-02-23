@@ -1,4 +1,4 @@
-package com.example.springbootaws.entity;
+package com.szymontracz.portfoliowarehouse.entity;
 
 import org.junit.jupiter.api.Test;
 
