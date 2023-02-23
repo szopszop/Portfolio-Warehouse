@@ -1,10 +1,9 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.repository;
 
-import com.example.springbootaws.user.User;
+import com.example.springbootaws.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

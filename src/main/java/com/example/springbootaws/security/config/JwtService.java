@@ -21,6 +21,7 @@ public class JwtService {
 
 
 
+
     @Value("${jwt_security.jwtSecretKey}")
     private static String jwtSecretKey;
 

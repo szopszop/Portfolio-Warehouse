@@ -1,5 +1,7 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.controller;
 
+import com.example.springbootaws.service.UserService;
+import com.example.springbootaws.service.UserServiceImpl;
 import com.example.springbootaws.security.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -1,9 +1,12 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +21,19 @@ import java.util.*;
 public class User  implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID userProfileId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
+    private UUID id;
+    @Column(nullable = false, length = 50)
     private String username;
+    @Column(nullable = false, length = 120, unique = true)
     private String email;
+
     private String userProfileImageLink;   // S3 key
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -39,9 +50,7 @@ public class User  implements UserDetails {
         LOCAL, GOOGLE
     }
 
-    public enum Sex {
-        MALE, FEMALE
-    }
+
 
     @Override
     public String getPassword() {
@@ -52,8 +61,8 @@ public class User  implements UserDetails {
         return email;
     }
 
-    public UUID getUserProfileId() {
-        return userProfileId;
+    public UUID getId() {
+        return id;
     }
 
     public Optional<String> getUserProfileImageLink() {
@@ -100,14 +109,14 @@ public class User  implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
-        return Objects.equals(userProfileId, that.userProfileId) &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(userProfileImageLink, that.userProfileImageLink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userProfileId, username, userProfileImageLink);
+        return Objects.hash(id, username, userProfileImageLink);
     }
 }
 

@@ -1,6 +1,6 @@
 package com.example.springbootaws.security.config;
 
-import com.example.springbootaws.user.UserRepository;
+import com.example.springbootaws.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

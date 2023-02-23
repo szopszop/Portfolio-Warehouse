@@ -1,7 +1,9 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.service;
 
 import com.example.springbootaws.amazon.bucket.BucketName;
 import com.example.springbootaws.amazon.filestore.FileStore;
+import com.example.springbootaws.entity.User;
+import com.example.springbootaws.repository.UserRepository;
 import com.example.springbootaws.security.MessageResponse;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void uploadProfilePicture(User user, MultipartFile file, Map<String, String> metadata) {
-        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getUserProfileId());
+        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getId());
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
         try {
             fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public byte[] downloadUserProfileImage(UUID userProfileId) {
         if (userRepository.findUserByUserProfileId(userProfileId).isPresent()) {
             User user = userRepository.findUserByUserProfileId(userProfileId).get();
-            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getUserProfileId());
+            String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getId());
             return user.getUserProfileImageLink().map(key -> fileStore.download(path, key)).orElse(new byte[0]);
         }
         return new byte[0];

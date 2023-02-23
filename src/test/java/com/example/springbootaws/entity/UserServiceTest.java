@@ -1,4 +1,4 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.entity;
 
 import org.junit.jupiter.api.Test;
 

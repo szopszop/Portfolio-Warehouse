@@ -3,8 +3,8 @@ package com.example.springbootaws.security.auth;
 
 
 import com.example.springbootaws.security.config.JwtService;
-import com.example.springbootaws.user.User;
-import com.example.springbootaws.user.UserRepository;
+import com.example.springbootaws.entity.User;
+import com.example.springbootaws.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

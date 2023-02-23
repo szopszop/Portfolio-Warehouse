@@ -1,4 +1,4 @@
-package com.example.springbootaws.user;
+package com.example.springbootaws.service;
 
 import com.example.springbootaws.security.MessageResponse;
 import org.springframework.http.ResponseEntity;
