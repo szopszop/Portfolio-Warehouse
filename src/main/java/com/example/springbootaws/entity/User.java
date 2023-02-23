@@ -37,19 +37,11 @@ public class User  implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Provider provider;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
 
     public enum Role {
         USER, ADMIN
     }
-
-    public enum Provider {
-        LOCAL, GOOGLE
-    }
-
 
 
     @Override

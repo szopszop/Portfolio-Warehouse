@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<MessageResponse> uploadProfilePictureValidation(UUID userProfileId, MultipartFile file) {
         if (isFileNotEmpty(file) && isFileAnImage(file) &&
-                userRepository.findUserByUserProfileId(userProfileId).isPresent()) {
-            User user = userRepository.findUserByUserProfileId(userProfileId).get();
+                userRepository.findUserById(userProfileId).isPresent()) {
+            User user = userRepository.findUserById(userProfileId).get();
             Map<String, String> metadata = extractMetadata(file);
             uploadProfilePicture(user, file, metadata);
             return ResponseEntity.ok(new MessageResponse("Image uploaded successfully."));
@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public byte[] downloadUserProfileImage(UUID userProfileId) {
-        if (userRepository.findUserByUserProfileId(userProfileId).isPresent()) {
-            User user = userRepository.findUserByUserProfileId(userProfileId).get();
+        if (userRepository.findUserById(userProfileId).isPresent()) {
+            User user = userRepository.findUserById(userProfileId).get();
             String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), user.getId());
             return user.getUserProfileImageLink().map(key -> fileStore.download(path, key)).orElse(new byte[0]);
         }
