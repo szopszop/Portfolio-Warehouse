@@ -1,6 +1,6 @@
 package com.example.springbootaws.service;
 
-import com.example.springbootaws.security.MessageResponse;
+import com.amazonaws.services.pinpoint.model.MessageResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

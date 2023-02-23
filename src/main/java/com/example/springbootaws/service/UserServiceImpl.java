@@ -1,10 +1,10 @@
 package com.example.springbootaws.service;
 
+import com.amazonaws.services.pinpoint.model.MessageResponse;
 import com.example.springbootaws.amazon.bucket.BucketName;
 import com.example.springbootaws.amazon.filestore.FileStore;
 import com.example.springbootaws.entity.User;
 import com.example.springbootaws.repository.UserRepository;
-import com.example.springbootaws.security.MessageResponse;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
