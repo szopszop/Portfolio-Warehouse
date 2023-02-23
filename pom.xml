@@ -8,11 +8,11 @@
         <version>3.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-AWS</artifactId>
+    <groupId>com.szymontracz</groupId>
+    <artifactId>Portfolio-Warehouse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Spring-Boot-AWS</name>
-    <description>Spring-Boot-AWS</description>
+    <name>Portfolio-Warehouse</name>
+    <description>Portfolio-Warehouse</description>
     <properties>
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
