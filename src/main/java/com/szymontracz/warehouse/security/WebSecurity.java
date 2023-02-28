@@ -37,20 +37,16 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        // Configure AuthenticationManagerBuilder
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 
-        // Get AuthenticationManager
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         http
                 .cors().and()
                 .csrf().disable().authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-                .requestMatchers("/users/ip").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/actuator/**").permitAll()
 
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))

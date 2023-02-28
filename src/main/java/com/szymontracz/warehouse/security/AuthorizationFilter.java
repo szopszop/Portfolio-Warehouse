@@ -16,10 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author sergeykargopolov
- */
+
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     Environment environment;

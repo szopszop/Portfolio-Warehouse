@@ -1,6 +1,5 @@
 package com.szymontracz.warehouse.security;
 
-
 import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;

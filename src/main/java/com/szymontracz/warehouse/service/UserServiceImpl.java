@@ -1,10 +1,12 @@
 package com.szymontracz.warehouse.service;
 
 
+import com.szymontracz.warehouse.amazon.filestore.FileStore;
 import com.szymontracz.warehouse.entity.UserEntity;
 import com.szymontracz.warehouse.model.UserDto;
 import com.szymontracz.warehouse.repository.UserRepository;
 import com.szymontracz.warehouse.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -21,25 +23,19 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
-//    FileStore fileStore;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-    UserRepository userRepository;
-    JwtUtil jwtUtil;
-    RestTemplate restTemplate;
-    Environment environment;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final RestTemplate restTemplate;
+
+    FileStore fileStore;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, JwtUtil jwtUtil, RestTemplate restTemplate) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
-        this.restTemplate = restTemplate;
 
-    }
 
     @Override
     public UserDto getUserById(UUID id) {
@@ -70,8 +66,6 @@ public class UserServiceImpl implements UserService {
 
         userEntity.setUserId(UUID.randomUUID());
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
-        System.out.println(userEntity.getEncryptedPassword() + "PASSWORD");
-        System.out.println(userEntity.getUserId() + "ID");
         userRepository.save(userEntity);
 
         return modelMapper.map(userEntity, UserDto.class);
