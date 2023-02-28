@@ -1,8 +1,7 @@
 package com.szymontracz.warehouse.controller;
 
 import com.szymontracz.warehouse.dto.UserDto;
-import com.szymontracz.warehouse.dto.web.CreateUserRequestModel;
-import com.szymontracz.warehouse.dto.web.UserResponseModel;
+
 import com.szymontracz.warehouse.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,18 +37,7 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel requestModel) {
-        ModelMapper modelMapper = new ModelMapper();
-        UserDto userDto = modelMapper.map(requestModel, UserDto.class);
 
-        UserDto createdUserDetails = userService.saveNewUser(userDto);
-
-        UserResponseModel returnValue = modelMapper.map(createdUserDetails, UserResponseModel.class);
-        log.info("User created with id: " + returnValue.getUserId().toString());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
-    }
 
 //    @PutMapping("/{userId}")
 //    public ResponseEntity updateUserById(@PathVariable("userId") UUID userId, @Validated @RequestBody UserDto userDto) {

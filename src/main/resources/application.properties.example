@@ -5,9 +5,30 @@ spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto=update
 
-albums.url=http://localhost:9000/albums
-
-authorization.token.header.name = Authorization
-authorization.token.header.prefix = Bearer
-
 secret.key=SECRET_KEY
+
+server.port=8080
+
+token.secret = jf9i4jg47fhdnj58yrgh35dhjf8403jdh375jf3497fhkd
+
+secret.key=F4428472B4B6250645367566B5970404E635266556A586E3272357538782F413
+
+
+amazonProperties.accessKey= AKIARLPNDM4ESCVNQTG3
+amazonProperties.secretKey= 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
+
+confirmation.url=http://localhost:8080/api/v1/authentication/confirm?token=%s
+
+spring.mail.default-encoding=UTF-8
+spring.mail.host= localhost
+spring.mail.port= 1025
+spring.mail.username= USERNAME
+spring.mail.password= PASSWORD
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.trust="*"
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=3000
+spring.mail.properties.mail.smtp.writetimeout=5000
+
+

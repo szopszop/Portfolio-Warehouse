@@ -1,14 +1,20 @@
 package com.szymontracz.warehouse.service;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +24,7 @@ public class EmailService {
     private final SpringTemplateEngine templateEngine;
 
     @Async
-    public void send(
-            String to,
-            String username,
-            String templateName,
-            String confirmationUrl
-    ) throws MessagingException {
+    public void send(String userEmail, String templateName, String confirmationUrl) throws MessagingException {
         if (!StringUtils.hasLength(templateName)) {
             templateName = "confirm-email";
         }
@@ -34,15 +35,15 @@ public class EmailService {
                 StandardCharsets.UTF_8.name()
         );
         Map<String, Object> properties = new HashMap<>();
-        properties.put("username", username);
+        properties.put("username", userEmail);
         properties.put("confirmationUrl", confirmationUrl);
 
         Context context = new Context();
         context.setVariables(properties);
 
-        helper.setFrom("bouali.social@gmail.com");
-        helper.setTo(to);
-        helper.setSubject("Welcome to our nice platform");
+        helper.setFrom("welcome@szymontracz.com");
+        helper.setTo(userEmail);
+        helper.setSubject("Welcome to Portfolio Warehouse");
 
         String template = templateEngine.process(templateName, context);
 

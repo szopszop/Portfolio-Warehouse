@@ -1,4 +1,4 @@
-package com.szymontracz.warehouse.controller;
+package com.szymontracz.warehouse.controller.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
