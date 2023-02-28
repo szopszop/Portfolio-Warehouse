@@ -1,8 +1,8 @@
 package com.szymontracz.warehouse.controller;
 
-import com.szymontracz.warehouse.model.UserDto;
-import com.szymontracz.warehouse.model.web.CreateUserRequestModel;
-import com.szymontracz.warehouse.model.web.UserResponseModel;
+import com.szymontracz.warehouse.dto.UserDto;
+import com.szymontracz.warehouse.dto.web.CreateUserRequestModel;
+import com.szymontracz.warehouse.dto.web.UserResponseModel;
 import com.szymontracz.warehouse.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

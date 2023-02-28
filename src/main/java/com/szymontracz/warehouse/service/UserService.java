@@ -1,6 +1,6 @@
 package com.szymontracz.warehouse.service;
 
-import com.szymontracz.warehouse.model.UserDto;
+import com.szymontracz.warehouse.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.UUID;

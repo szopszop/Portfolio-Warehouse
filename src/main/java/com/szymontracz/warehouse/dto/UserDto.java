@@ -1,4 +1,4 @@
-package com.szymontracz.warehouse.model;
+package com.szymontracz.warehouse.dto;
 
 import lombok.*;
 
