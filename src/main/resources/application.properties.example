@@ -5,18 +5,9 @@ spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto=update
 
-
-server.port=8080
-
 albums.url=http://localhost:9000/albums
 
-token.secret = TOKEN_SECRET
-token.expiration_time = 9640000000
-login.url.path = /users/login
 authorization.token.header.name = Authorization
 authorization.token.header.prefix = Bearer
 
-
-users.exceptions.userEntity-not-found = User not found!
-albums.exceptions.albums-not-found = User albums not found!
-
+secret.key=SECRET_KEY

@@ -2,35 +2,26 @@ package com.szymontracz.warehouse.service;
 
 
 import com.szymontracz.warehouse.amazon.filestore.FileStore;
-import com.szymontracz.warehouse.entity.UserEntity;
-import com.szymontracz.warehouse.model.UserDto;
+import com.szymontracz.warehouse.entity.User;
+import com.szymontracz.warehouse.dto.UserDto;
 import com.szymontracz.warehouse.repository.UserRepository;
-import com.szymontracz.warehouse.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-    private final RestTemplate restTemplate;
 
     FileStore fileStore;
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -44,12 +35,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).get();
 
-        if (userEntity == null) {
+        if (user == null) {
             throw new UsernameNotFoundException(email);
         }
-        return new ModelMapper().map(userEntity, UserDto.class);
+        return new ModelMapper().map(user, UserDto.class);
     }
 
     @Override
@@ -62,25 +53,16 @@ public class UserServiceImpl implements UserService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        User user = modelMapper.map(userDto, User.class);
 
-        userEntity.setUserId(UUID.randomUUID());
-        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userEntity);
+        userRepository.save(user);
 
-        return modelMapper.map(userEntity, UserDto.class);
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByEmail(email);
-
-        if (userEntity == null) {
-            throw new UsernameNotFoundException(email);
-        }
-
-        return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, // Email verification status
-                true, true, true, new ArrayList<>());
+        return userRepository.findByEmail(email).orElseThrow( () -> new UsernameNotFoundException("User not found"));
     }
 
 
