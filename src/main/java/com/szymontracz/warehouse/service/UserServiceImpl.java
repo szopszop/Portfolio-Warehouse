@@ -2,30 +2,60 @@ package com.szymontracz.warehouse.service;
 
 
 import com.szymontracz.warehouse.amazon.filestore.FileStore;
+import com.szymontracz.warehouse.auth.MessageResponse;
+import com.szymontracz.warehouse.auth.Request;
+import com.szymontracz.warehouse.security.jwt.JwtUtils;
+import com.szymontracz.warehouse.entity.EmailToken;
+import com.szymontracz.warehouse.entity.Role;
 import com.szymontracz.warehouse.entity.User;
 import com.szymontracz.warehouse.dto.UserDto;
+import com.szymontracz.warehouse.repository.TokenRepository;
 import com.szymontracz.warehouse.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Value("${confirmation.url}")
+    private String CONFIRMATION_URL;
+
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
+    private final TokenRepository tokenRepository;
+    private final EmailService emailService;
+    private AuthenticationManager authenticationManager;
 
     FileStore fileStore;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, TokenRepository tokenRepository, EmailService emailService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.tokenRepository = tokenRepository;
+        this.emailService = emailService;
+    }
 
 
     @Override
@@ -34,29 +64,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).get();
-
-        if (user == null) {
-            throw new UsernameNotFoundException(email);
-        }
-        return new ModelMapper().map(user, UserDto.class);
-    }
-
-    @Override
-    public UserDto getUserByUsername(String email) {
-        return null;
-    }
-
-    @Override
     public UserDto saveNewUser(UserDto userDto) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
         User user = modelMapper.map(userDto, User.class);
-
         userRepository.save(user);
-
         return modelMapper.map(user, UserDto.class);
     }
 
@@ -64,6 +76,120 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow( () -> new UsernameNotFoundException("User not found"));
     }
+
+    @Transactional
+    @Override
+    public ResponseEntity<MessageResponse> registerNewUser(Request registrationDto) {
+        if (isUserExists(registrationDto)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        }
+        User newUser = createNewUser(registrationDto);
+        userRepository.save(newUser);
+
+        EmailToken newEmailToken = createNewToken(newUser);
+        tokenRepository.save(newEmailToken);
+
+        sendEmail(registrationDto, newEmailToken);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    private boolean isUserExists(Request registrationDto) {
+        return userRepository.findByEmail(registrationDto.getEmail()).isPresent();
+    }
+
+    private User createNewUser(Request registrationDto) {
+        return User.builder()
+                .email(registrationDto.getEmail())
+                .password(passwordEncoder.encode(registrationDto.getPassword()))
+                .role(Role.USER)
+                .build();
+    }
+
+    private EmailToken createNewToken(User newUser) {
+        return EmailToken.builder()
+                .token(UUID.randomUUID().toString())
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(10))
+                .user(newUser)
+                .build();
+    }
+
+    private void sendEmail(Request registrationDto, EmailToken newEmailToken) {
+        try {
+            emailService.send(
+                    registrationDto.getEmail(),
+                    null,
+                    String.format(CONFIRMATION_URL, newEmailToken.getToken())
+            );
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String confirm(String token) {
+        EmailToken savedToken = tokenRepository.findByToken(token).orElseThrow(
+                () -> new IllegalStateException("Token not found"));
+        if (LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
+            String generatedToken = UUID.randomUUID().toString();
+            EmailToken newToken = EmailToken.builder()
+                    .token(generatedToken)
+                    .createdAt(LocalDateTime.now())
+                    .expiresAt(LocalDateTime.now().plusMinutes(10))
+                    .user(savedToken.getUser())
+                    .build();
+            tokenRepository.save(newToken);
+
+            try {
+                emailService.send(
+                        savedToken.getUser().getEmail(),
+                        null,
+                        String.format(CONFIRMATION_URL, generatedToken)
+                );
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            return "Token expired, a new token has been sent to your email";
+        }
+
+        User user = userRepository.findById(savedToken.getUser().getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setEnabled(true);
+
+        userRepository.save(user);
+
+        savedToken.setValidatedAt(LocalDateTime.now());
+
+        tokenRepository.save(savedToken);
+        return "<h1>Your account has been successfully activated</h1>";
+    }
+
+    @Override
+    public ResponseCookie authenticate(Request loginRequest) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = (User) authentication.getPrincipal();
+        return jwtUtils.generateJwtCookie(user.getEmail());
+    }
+
+    @Override
+    public ResponseCookie logoutUser() {
+        return jwtUtils.getCleanJwtCookie();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -108,32 +234,6 @@ public class UserServiceImpl implements UserService {
 //        }
 //        return new byte[0];
 //    }
-
-
-//    @Override
-//    public Optional<UserDto> getUserById(UUID id) {
-//        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findUserById(id).orElse(null)));
-//    }
-//
-//    @Override
-//    public Optional<UserDto> getUserByEmail(String email) {
-//        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByEmail(email).orElse(null)));
-//    }
-//
-//    @Override
-//    public Optional<UserDto> getUserByUsername(String username) {
-//        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByUsername(username).orElse(null)));
-//    }
-//
-//    @Override
-//    public UserDto saveNewUser(UserDto userDto) {
-//        return userMapper.userToUserDto(userRepository.save(userMapper.userDtoToUser(userDto)));
-//    }
-//
-//    @Override
-//    public Optional<UserDto> updateUserById(UUID uuid, UserDto userDto) {
-//        return Optional.empty();
-//    }
 //
 //    @Override
 //    public Boolean deleteUserById(UUID userId) {
@@ -164,14 +264,5 @@ public class UserServiceImpl implements UserService {
 //        }
 //    }
 //
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user;
-//        if (userRepository.findByUsername(username).isPresent()) {
-//            user = userRepository.findByUsername(username).get();
-//        } else {
-//            throw new UsernameNotFoundException(username);
-//        }
-//        return new User();
-//    }
+
 }
