@@ -9,13 +9,13 @@ secret.key=SECRET_KEY
 
 server.port=8080
 
-token.secret = jf9i4jg47fhdnj58yrgh35dhjf8403jdh375jf3497fhkd
+token.secret = TOKEN_SECRET
 
-secret.key=F4428472B4B6250645367566B5970404E635266556A586E3272357538782F413
+secret.key=SECRET_KEY
 
 
-amazonProperties.accessKey= AKIARLPNDM4ESCVNQTG3
-amazonProperties.secretKey= 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
+amazonProperties.accessKey= ACCESS_KEY
+amazonProperties.secretKey= SECRET_KEY
 
 confirmation.url=http://localhost:8080/api/v1/authentication/confirm?token=%s
 
@@ -31,4 +31,6 @@ spring.mail.properties.mail.smtp.connectiontimeout=5000
 spring.mail.properties.mail.smtp.timeout=3000
 spring.mail.properties.mail.smtp.writetimeout=5000
 
-
+warehouse.jwtCookieName=COOKIE_NAME
+warehouse.jwtSecret=JWT_SECRET
+warehouse.jwtExpirationMs=11160000
