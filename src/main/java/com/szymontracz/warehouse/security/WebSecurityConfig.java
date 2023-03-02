@@ -70,8 +70,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/**").permitAll().anyRequest().authenticated();
 
-        http.authenticationProvider(authenticationProvider(userService));
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.authenticationProvider(authenticationProvider(userService));
+//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
