@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     UserDto getUserById(UUID id);
 
-    UserDto saveNewUser(UserDto userDto);
+//    UserDto saveNewUser(UserDto userDto);
 //    Optional<UserDto> updateUserById(UUID uuid, UserDto userDto);
 //    Boolean deleteUserById(UUID userId);
 

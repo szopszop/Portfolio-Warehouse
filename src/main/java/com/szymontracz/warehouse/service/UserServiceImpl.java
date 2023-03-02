@@ -13,8 +13,6 @@ import com.szymontracz.warehouse.repository.TokenRepository;
 import com.szymontracz.warehouse.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,17 +42,19 @@ public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
-    private AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
 
     FileStore fileStore;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, TokenRepository tokenRepository, EmailService emailService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, TokenRepository tokenRepository, EmailService emailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.tokenRepository = tokenRepository;
         this.emailService = emailService;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -63,14 +63,14 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public UserDto saveNewUser(UserDto userDto) {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        User user = modelMapper.map(userDto, User.class);
-        userRepository.save(user);
-        return modelMapper.map(user, UserDto.class);
-    }
+//    @Override
+//    public UserDto saveNewUser(UserDto userDto) {
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        User user = modelMapper.map(userDto, User.class);
+//        userRepository.save(user);
+//        return modelMapper.map(user, UserDto.class);
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

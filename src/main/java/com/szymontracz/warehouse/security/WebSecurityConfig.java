@@ -2,6 +2,7 @@ package com.szymontracz.warehouse.security;
 
 import com.szymontracz.warehouse.security.jwt.AuthEntryPointJwt;
 import com.szymontracz.warehouse.security.jwt.AuthTokenFilter;
+import com.szymontracz.warehouse.service.UserDetailsServiceImpl;
 import com.szymontracz.warehouse.service.UserServiceImpl;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -29,8 +30,10 @@ public class WebSecurityConfig {
     public WebSecurityConfig() {
     }
 
-    private AuthEntryPointJwt unauthorizedHandler;
-    private UserServiceImpl userService;
+    @Autowired
+    AuthEntryPointJwt unauthorizedHandler;
+    @Autowired
+    UserDetailsServiceImpl userService;
 
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
@@ -47,7 +50,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(UserServiceImpl userService) {
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsServiceImpl userService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -67,11 +70,14 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v*/auth/**").permitAll()
                 .requestMatchers("/api/v*/test/**").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/**").permitAll().anyRequest().authenticated();
-
-//        http.authenticationProvider(authenticationProvider(userService));
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers("/login*").permitAll()
+                .requestMatchers("/**").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin();
+        http.authenticationProvider(authenticationProvider(userService));
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
