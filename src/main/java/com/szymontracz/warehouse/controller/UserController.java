@@ -3,15 +3,16 @@ package com.szymontracz.warehouse.controller;
 import com.szymontracz.warehouse.dto.UserDto;
 
 import com.szymontracz.warehouse.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -39,34 +40,6 @@ public class UserController {
 
 
 
-//    @PutMapping("/{userId}")
-//    public ResponseEntity updateUserById(@PathVariable("userId") UUID userId, @Validated @RequestBody UserDto userDto) {
-//        if (userService.updateUserById(userId, userDto).isEmpty()) {
-//            throw new NotFoundException();
-//        }
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity deleteBeerById(@PathVariable("userId") UUID userId) {
-//        if (!userService.deleteUserById(userId)) {
-//            throw new NotFoundException();
-//        }
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-//
-//
-//    @PostMapping(path = "{userProfileId}/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-//                                                        produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<MessageResponse> uploadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId,
-//                                                                  @RequestParam("imageFile") MultipartFile imageFile) {
-//        return userService.uploadProfilePictureValidation(userProfileId, imageFile);
-//    }
-//
-//    @GetMapping("{userProfileId}/image/download")
-//    public byte[] downloadUserProfileImage(@PathVariable("userProfileId") UUID userProfileId) {
-//        return userService.downloadUserProfileImage(userProfileId);
-//    }
-//
+
 
 }
