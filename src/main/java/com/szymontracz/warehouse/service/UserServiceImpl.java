@@ -2,8 +2,8 @@ package com.szymontracz.warehouse.service;
 
 
 import com.szymontracz.warehouse.amazon.filestore.FileStore;
-import com.szymontracz.warehouse.auth.MessageResponse;
-import com.szymontracz.warehouse.auth.Request;
+import com.szymontracz.warehouse.auth.AuthResponse;
+import com.szymontracz.warehouse.auth.AuthRequest;
 import com.szymontracz.warehouse.security.jwt.JwtUtils;
 import com.szymontracz.warehouse.entity.EmailToken;
 import com.szymontracz.warehouse.entity.Role;
@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ResponseEntity<MessageResponse> registerNewUser(Request registrationDto) {
+    public ResponseEntity<AuthResponse> registerNewUser(AuthRequest registrationDto) {
         if (isUserExists(registrationDto)) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+            return ResponseEntity.badRequest().body(new AuthResponse("Error: Email is already in use!"));
         }
         User newUser = createNewUser(registrationDto);
         userRepository.save(newUser);
@@ -91,14 +91,14 @@ public class UserServiceImpl implements UserService {
 
         sendEmail(registrationDto, newEmailToken);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new AuthResponse("User registered successfully!"));
     }
 
-    private boolean isUserExists(Request registrationDto) {
+    private boolean isUserExists(AuthRequest registrationDto) {
         return userRepository.findByEmail(registrationDto.getEmail()).isPresent();
     }
 
-    private User createNewUser(Request registrationDto) {
+    private User createNewUser(AuthRequest registrationDto) {
         return User.builder()
                 .email(registrationDto.getEmail())
                 .password(passwordEncoder.encode(registrationDto.getPassword()))
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private void sendEmail(Request registrationDto, EmailToken newEmailToken) {
+    private void sendEmail(AuthRequest registrationDto, EmailToken newEmailToken) {
         try {
             emailService.send(
                     registrationDto.getEmail(),
@@ -166,9 +166,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseCookie authenticate(Request loginRequest) {
+    public ResponseCookie authenticate(AuthRequest loginAuthRequest) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginAuthRequest.getEmail(), loginAuthRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
         return jwtUtils.generateJwtCookie(user.getEmail());

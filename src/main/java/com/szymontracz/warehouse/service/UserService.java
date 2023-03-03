@@ -1,7 +1,7 @@
 package com.szymontracz.warehouse.service;
 
-import com.szymontracz.warehouse.auth.MessageResponse;
-import com.szymontracz.warehouse.auth.Request;
+import com.szymontracz.warehouse.auth.AuthResponse;
+import com.szymontracz.warehouse.auth.AuthRequest;
 import com.szymontracz.warehouse.dto.UserDto;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,9 @@ public interface UserService extends UserDetailsService {
 
 //    byte[] downloadUserProfileImage(UUID userProfileId);
 
-    ResponseEntity<MessageResponse> registerNewUser(Request registertationRequest);
+    ResponseEntity<AuthResponse> registerNewUser(AuthRequest registertationAuthRequest);
 
-    ResponseCookie authenticate(Request loginRequest);
+    ResponseCookie authenticate(AuthRequest loginAuthRequest);
 
     ResponseCookie logoutUser();
 

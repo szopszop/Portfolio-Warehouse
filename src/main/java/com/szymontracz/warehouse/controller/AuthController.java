@@ -1,7 +1,7 @@
 package com.szymontracz.warehouse.controller;
 
-import com.szymontracz.warehouse.auth.MessageResponse;
-import com.szymontracz.warehouse.auth.Request;
+import com.szymontracz.warehouse.auth.AuthResponse;
+import com.szymontracz.warehouse.auth.AuthRequest;
 import com.szymontracz.warehouse.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +23,12 @@ public class AuthController {
   private final UserService userService;
 
   @PostMapping("/register")
-  public ResponseEntity<MessageResponse> register(@Valid @RequestBody Request requestDto) throws IOException {
-    return userService.registerNewUser(requestDto);
+  public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest authRequestDto) throws IOException {
+    return userService.registerNewUser(authRequestDto);
   }
   @PostMapping("/authenticate")
-  public ResponseEntity<ResponseCookie> authenticate(@RequestBody Request requestDto) {
-    ResponseCookie jwtCookie = userService.authenticate(requestDto);
+  public ResponseEntity<ResponseCookie> authenticate(@RequestBody AuthRequest authRequestDto) {
+    ResponseCookie jwtCookie = userService.authenticate(authRequestDto);
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(jwtCookie);
   }
   @GetMapping("/current")
