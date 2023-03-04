@@ -1,6 +1,6 @@
-package com.szymontracz.warehouse.repository;
+package com.szymontracz.warehouse.repositories;
 
-import com.szymontracz.warehouse.entity.EmailToken;
+import com.szymontracz.warehouse.entities.EmailToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

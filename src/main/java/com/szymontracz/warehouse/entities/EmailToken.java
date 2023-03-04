@@ -1,4 +1,4 @@
-package com.szymontracz.warehouse.entity;
+package com.szymontracz.warehouse.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

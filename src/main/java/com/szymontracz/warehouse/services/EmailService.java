@@ -1,4 +1,4 @@
-package com.szymontracz.warehouse.service;
+package com.szymontracz.warehouse.services;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

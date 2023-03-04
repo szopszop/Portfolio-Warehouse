@@ -1,4 +1,4 @@
-package com.szymontracz.warehouse.entity;
+package com.szymontracz.warehouse.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,8 +18,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(unique = true)
     private String email;
     private String password;

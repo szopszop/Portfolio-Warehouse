@@ -1,7 +1,7 @@
 package com.szymontracz.warehouse.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sergio.jwt.backend.dtos.ErrorDto;
+import com.szymontracz.warehouse.dtos.ErrorDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
