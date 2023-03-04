@@ -23,9 +23,6 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-
-//    private String userProfileImageLink;   // S3 key
-
     private boolean locked;
     private boolean enabled;
     @Enumerated(EnumType.STRING)
