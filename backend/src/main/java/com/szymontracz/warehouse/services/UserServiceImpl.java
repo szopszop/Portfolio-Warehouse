@@ -1,10 +1,11 @@
 package com.szymontracz.warehouse.services;
 
 import com.szymontracz.warehouse.dtos.CredentialsDto;
-import com.szymontracz.warehouse.dtos.SignUpDto;
 import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.entities.User;
 import com.szymontracz.warehouse.exceptions.AppException;
+import com.szymontracz.warehouse.exceptions.BadArgumentsException;
+import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
 import com.szymontracz.warehouse.mappers.UserMapper;
 import com.szymontracz.warehouse.repositories.TokenRepository;
 import com.szymontracz.warehouse.repositories.UserRepository;
@@ -37,24 +38,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByEmail(credentialsDto.getEmail())
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+        throw new BadArgumentsException("Invalid password");
     }
 
     @Override
-    public UserDto register(SignUpDto userDto) {
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+    public UserDto register(CredentialsDto credentialsDto) {
+        Optional<User> optionalUser = userRepository.findByEmail(credentialsDto.getEmail());
 
         if (optionalUser.isPresent()) {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
 
-        User user = userMapper.signUpToUser(userDto);
-        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+        User user = userMapper.signUpToUser(credentialsDto);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(credentialsDto.getPassword())));
 
         User savedUser = userRepository.save(user);
 

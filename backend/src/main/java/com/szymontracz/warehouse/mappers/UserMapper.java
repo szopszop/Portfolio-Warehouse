@@ -1,6 +1,6 @@
 package com.szymontracz.warehouse.mappers;
 
-import com.szymontracz.warehouse.dtos.SignUpDto;
+import com.szymontracz.warehouse.dtos.CredentialsDto;
 import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.entities.User;
 import org.mapstruct.Mapper;
@@ -12,6 +12,6 @@ public interface UserMapper {
     UserDto toUserDto(User user);
 
     @Mapping(target = "password", ignore = true)
-    User signUpToUser(SignUpDto signUpDto);
+    User signUpToUser(CredentialsDto credentialsDto);
 
 }

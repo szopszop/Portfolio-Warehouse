@@ -10,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import static com.szymontracz.warehouse.controllers.AuthController.*;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -17,6 +19,7 @@ public class SecurityConfig {
 
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
+    private final String[] allowedPaths = { loginPath, registerPath, logoutPath};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,8 +31,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET, "/login", "/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, allowedPaths).permitAll()
                         .anyRequest().authenticated())
                 .formLogin()
         ;
