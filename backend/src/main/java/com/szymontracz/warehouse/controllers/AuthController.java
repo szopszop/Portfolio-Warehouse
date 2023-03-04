@@ -6,6 +6,7 @@ import com.szymontracz.warehouse.dtos.CredentialsDto;
 import com.szymontracz.warehouse.dtos.SignUpDto;
 import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.services.UserService;
+import com.szymontracz.warehouse.services.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import java.net.URI;
 @CrossOrigin(origins = {"http://localhost:3000/"}, allowedHeaders = "*", allowCredentials = "true")
 public class AuthController {
 
-  private final UserService userService;
+  private final UserServiceImpl userService;
   private final UserAuthProvider userAuthProvider;
 
   @PostMapping("/login")
@@ -37,5 +38,7 @@ public class AuthController {
     createdUser.setToken(userAuthProvider.createToken(user.getEmail()));
     return ResponseEntity.created(URI.create("/users/" + createdUser.getId())).body(createdUser);
   }
+
+
 
 }
