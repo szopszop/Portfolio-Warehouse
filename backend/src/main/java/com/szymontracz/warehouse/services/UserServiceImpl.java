@@ -4,8 +4,6 @@ import com.szymontracz.warehouse.dtos.CredentialsDto;
 import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.entities.User;
 import com.szymontracz.warehouse.exceptions.AppException;
-import com.szymontracz.warehouse.exceptions.BadArgumentsException;
-import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
 import com.szymontracz.warehouse.mappers.UserMapper;
 import com.szymontracz.warehouse.repositories.TokenRepository;
 import com.szymontracz.warehouse.repositories.UserRepository;
@@ -32,18 +30,20 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
+    public final static String emailAlreadyExistsMessage = "Email already exists";
+    public final static String unknownUserMessage = "Unknown user";
+    public final static String invalidCredentials = "Invalid credentials";
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByEmail(credentialsDto.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
+                .orElseThrow(() -> new AppException(unknownUserMessage, HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-        throw new BadArgumentsException("Invalid password");
+        throw new AppException(invalidCredentials, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findByEmail(credentialsDto.getEmail());
 
         if (optionalUser.isPresent()) {
-            throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
+            throw new AppException(emailAlreadyExistsMessage, HttpStatus.BAD_REQUEST);
         }
 
         User user = userMapper.signUpToUser(credentialsDto);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     public UserDto findByLogin(String login) {
         User user = userRepository.findByEmail(login)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException(unknownUserMessage, HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
     }
 
