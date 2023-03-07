@@ -21,21 +21,22 @@ public class SecurityConfig {
 
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
-    private final String[] allowedPaths = { loginPath, registerPath, logoutPath};
+    private final String[] allowedPaths = { loginPath, registerPath, logoutPath };
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("*").allowedMethods("*");
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000").allowedMethods("*");
+//            }
+//        };
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
