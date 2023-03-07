@@ -1,16 +1,26 @@
 import { useRouteError } from "react-router-dom";
+import PageContent from "../components/PageContent.jsx";
 
 export default function ErrorPage() {
     const error = useRouteError();
-    console.error(error);
+    let title = 'An error occurred!';
+    let message = 'Something went wrong.';
+
+
+    if (error.status === 500) {
+        message = error.data.message;
+    }
+
+    if (error.status === 404) {
+        title = 'Not found!';
+        message = 'Could not find resource or page.';
+    }
 
     return (
-        <div id="error-page">
-            <h1>Oops!</h1>
-            <p>Sorry, an unexpected error has occurred.</p>
-            <p>
-                <i>{error.statusText || error.message}</i>
-            </p>
-        </div>
+        <>
+            <PageContent title={title}>
+                <p>{message}</p>
+            </PageContent>
+        </>
     );
 }
