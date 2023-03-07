@@ -1,4 +1,9 @@
 
 export function getAuthToken() {
-    return localStorage.getItem('auth_token')
+    return localStorage.getItem('token')
+}
+
+
+export function tokenLoader() {
+    return getAuthToken();
 }

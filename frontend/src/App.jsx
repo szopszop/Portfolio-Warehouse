@@ -8,13 +8,16 @@ import HomePage from "./pages/Home.jsx";
 import UserProfilePage from "./pages/UserProfile.jsx";
 import AuthenticationPage, { action as authAction } from "./pages/Authentication";
 import GalleryPage from "./pages/Gallery.jsx";
-import { action as logoutAction} from "./pages/Logout.jsx";
+import { action as logoutAction } from "./pages/Logout.jsx";
+import { tokenLoader } from "./util/auth"
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <RootLayout />,
         errorElement: <ErrorPage />,
+        id: 'root',
+        loader: tokenLoader,
         children: [
             { index: true, element: <HomePage/> },
             { path: "/auth", element: <AuthenticationPage />, action: authAction },
