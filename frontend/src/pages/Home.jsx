@@ -6,9 +6,7 @@ function HomePage() {
         <>
             <h1>Home Page</h1>
 
-            <button onClick={response} >btn</button>
-
-
+            <button onClick={response}>BUTTON</button>
 
         </>
     );
