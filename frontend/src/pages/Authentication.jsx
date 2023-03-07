@@ -9,11 +9,11 @@ export default AuthenticationPage;
 
 export async function action({request}) {
     const searchParams = new URL(request.url).searchParams;
-    // const mode = searchParams.get('mode') || 'login';
-    //
-    // if (mode !== 'login' && mode !== 'register') {
-    //     throw json({message: 'Unsupported mode'}, {status: 422})
-    // }
+    const mode = searchParams.get('mode') || 'login';
+
+    if (mode !== 'login' && mode !== 'register') {
+        throw json({message: 'Unsupported mode'}, {status: 422})
+    }
 
     const data = await request.formData();
     const authData = {
@@ -21,7 +21,8 @@ export async function action({request}) {
         password: data.get('password')
     };
 
-    const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+    const authPath = '/api/v1/auth/';
+    const response = await fetch('http://localhost:8080' + authPath + mode, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -40,6 +41,13 @@ export async function action({request}) {
         throw json({message: 'Could not authenticate user.'}, {status: 500});
     }
 
-    // mange token
+    const resData = await response.json();
+    const token = resData.token;
+
+    localStorage.setItem('token', token)
+    const expiration = new Date();
+    expiration.setHours(expiration.getHours() + 1);
+    localStorage.setItem('expiration', expiration.toISOString());
+
     return redirect('/');
 }
