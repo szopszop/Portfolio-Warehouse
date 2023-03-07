@@ -13,9 +13,15 @@ function MainNavigation() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/events" className={({isActive}) =>
+                        <NavLink to="/gallery" className={({isActive}) =>
                             isActive ? classes.active : undefined}>
-                            Events
+                            Gallery
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to='/auth?mode=login' className={({isActive}) =>
+                            isActive ? classes.active : undefined}>
+                            Login / Register
                         </NavLink>
                     </li>
                 </ul>

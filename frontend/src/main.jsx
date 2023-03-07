@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import './index.css'
+import './main.css'
 import ErrorPage from "./pages/Error.jsx";
 import RootLayout from "./pages/Root.jsx";
 import HomePage from "./pages/Home.jsx";
-import LoginPage from "./pages/Login.jsx";
-import UserProfile from "./pages/UserProfile.jsx";
+import UserProfilePage from "./pages/UserProfile.jsx";
+import AuthenticationPage, { action as authAction } from "./pages/Authentication";
+import GalleryPage from "./pages/Gallery.jsx";
 
 
 const router = createBrowserRouter([
@@ -16,8 +17,9 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             { index: true, element: <HomePage/> },
-            { path: "/login", element: <LoginPage /> },
-            { path: "/profile", element: <UserProfile /> }
+            { path: "/auth", element: <AuthenticationPage />, action: authAction },
+            { path: "/profile", element: <UserProfilePage /> },
+            { path: "/gallery", element: <GalleryPage /> },
 
         ],
     },
