@@ -8,7 +8,7 @@ import HomePage from "./pages/Home.jsx";
 import UserProfilePage from "./pages/UserProfile.jsx";
 import AuthenticationPage, { action as authAction } from "./pages/Authentication";
 import GalleryPage from "./pages/Gallery.jsx";
-
+import { action as logoutAction} from "./pages/Logout.jsx";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +18,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <HomePage/> },
             { path: "/auth", element: <AuthenticationPage />, action: authAction },
+            { path: "/logout", action: logoutAction },
             { path: "/profile", element: <UserProfilePage /> },
             { path: "/gallery", element: <GalleryPage /> },
 

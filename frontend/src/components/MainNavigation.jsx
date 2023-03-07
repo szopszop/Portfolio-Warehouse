@@ -1,5 +1,5 @@
 import classes from './MainNavigation.module.css';
-import {NavLink} from "react-router-dom";
+import {Form, NavLink} from "react-router-dom";
 
 function MainNavigation() {
     return (
@@ -23,6 +23,11 @@ function MainNavigation() {
                             isActive ? classes.active : undefined}>
                             Login / Register
                         </NavLink>
+                    </li>
+                    <li>
+                        <Form action='/logout' method='post'>
+                            <button>Logout</button>
+                        </Form>
                     </li>
                 </ul>
             </nav>

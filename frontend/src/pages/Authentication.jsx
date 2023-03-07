@@ -21,8 +21,8 @@ export async function action({request}) {
         password: data.get('password')
     };
 
-    const registerPath = '/api/v1/auth/register';
-    const response = await fetch('http://localhost:8080' + registerPath, {
+    const authPath = '/api/v1/auth/';
+    const response = await fetch('http://localhost:8080' + authPath + mode, {
         method: "POST",
         credentials: "include",
         headers: {
