@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000/"}, allowedHeaders = "*", allowCredentials = "true")
+@RequestMapping
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*", allowCredentials = "true")
 public class AuthController {
 
   private final UserServiceImpl userService;
@@ -45,6 +49,10 @@ public class AuthController {
   public ResponseEntity<Void> logout(@AuthenticationPrincipal CredentialsDto credentialsDto) {
     SecurityContextHolder.clearContext();
     return ResponseEntity.noContent().build();
+  }
+  @GetMapping("/string")
+  public String getString() {
+    return "string";
   }
 
 
