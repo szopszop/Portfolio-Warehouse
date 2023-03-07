@@ -30,12 +30,19 @@ function MainNavigation() {
                         </li>
                     )}
                     {token && (
-
-                        <li>
-                            <Form action='/logout' method='post'>
-                                <button>Logout</button>
-                            </Form>
-                        </li>
+                        <>
+                            <li>
+                                <NavLink to='/profile' className={({isActive}) =>
+                                    isActive ? classes.active : undefined}>
+                                    User Page
+                                </NavLink>
+                            </li>
+                            <li>
+                                <Form action='/logout' method='post'>
+                                    <button>Logout</button>
+                                </Form>
+                            </li>
+                        </>
                     )}
                 </ul>
             </nav>

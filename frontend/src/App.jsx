@@ -9,7 +9,7 @@ import UserProfilePage from "./pages/UserProfile.jsx";
 import AuthenticationPage, { action as authAction } from "./pages/Authentication";
 import GalleryPage from "./pages/Gallery.jsx";
 import { action as logoutAction } from "./pages/Logout.jsx";
-import { tokenLoader } from "./util/auth"
+import { checkAuthLoader, tokenLoader } from "./util/auth"
 
 const router = createBrowserRouter([
     {
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
             { index: true, element: <HomePage/> },
             { path: "/auth", element: <AuthenticationPage />, action: authAction },
             { path: "/logout", action: logoutAction },
-            { path: "/profile", element: <UserProfilePage /> },
+            { path: "/profile", element: <UserProfilePage />, loader: checkAuthLoader },
             { path: "/gallery", element: <GalleryPage /> },
 
         ],
