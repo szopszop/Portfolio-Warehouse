@@ -22,7 +22,7 @@ export async function action({request}) {
     };
 
     const registerPath = '/api/v1/auth/register';
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}` + registerPath, {
+    const response = await fetch('http://localhost:8080' + registerPath, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -41,6 +41,11 @@ export async function action({request}) {
         throw json({message: 'Could not authenticate user.'}, {status: 500});
     }
 
-    // mange token
+    const resData = await response.json();
+    const token = resData.token;
+
+    localStorage.setItem('token', token)
+
+
     return redirect('/');
 }

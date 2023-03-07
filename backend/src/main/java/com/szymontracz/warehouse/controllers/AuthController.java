@@ -50,10 +50,6 @@ public class AuthController {
     SecurityContextHolder.clearContext();
     return ResponseEntity.noContent().build();
   }
-  @GetMapping("/string")
-  public String getString() {
-    return "string";
-  }
 
 
 
