@@ -21,6 +21,12 @@ function MainNavigation() {
                             Gallery
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/blog" className={({isActive}) =>
+                            isActive ? classes.active : undefined}>
+                            Fake Posts for Lazy Loading
+                        </NavLink>
+                    </li>
                     {!token && (
                         <li>
                             <NavLink to='/auth?mode=login' className={({isActive}) =>
