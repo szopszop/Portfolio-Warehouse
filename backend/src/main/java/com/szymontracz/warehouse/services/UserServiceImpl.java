@@ -7,7 +7,6 @@ import com.szymontracz.warehouse.exceptions.AppException;
 import com.szymontracz.warehouse.mappers.UserMapper;
 import com.szymontracz.warehouse.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
