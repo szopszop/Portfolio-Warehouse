@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class User implements UserDetails {
     private boolean enabled;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Image> images;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

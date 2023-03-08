@@ -3,9 +3,8 @@ package com.szymontracz.warehouse.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szymontracz.warehouse.dtos.CredentialsDto;
 import com.szymontracz.warehouse.dtos.UserDto;
-import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
+import com.szymontracz.warehouse.exceptions.AppException;
 import com.szymontracz.warehouse.services.UserServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,13 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import static com.szymontracz.warehouse.controllers.AuthController.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -75,12 +75,12 @@ class AuthControllerTest {
                 .password("password".toCharArray())
                 .build();
 
-        when(userService.login(credentialsDto)).thenThrow(ResourceNotFoundException.class);
+        when(userService.login(credentialsDto)).thenThrow(AppException.class);
         // when then
         mockMvc.perform(post(loginPath)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsBytes(credentialsDto)))
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException));
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof AppException));
     }
 
 

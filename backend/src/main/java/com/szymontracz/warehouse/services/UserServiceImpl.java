@@ -4,8 +4,6 @@ import com.szymontracz.warehouse.dtos.CredentialsDto;
 import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.entities.User;
 import com.szymontracz.warehouse.exceptions.AppException;
-import com.szymontracz.warehouse.exceptions.BadArgumentsException;
-import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
 import com.szymontracz.warehouse.mappers.UserMapper;
 import com.szymontracz.warehouse.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +29,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByEmail(credentialsDto.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-        throw new BadArgumentsException("Invalid password");
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
     @Override

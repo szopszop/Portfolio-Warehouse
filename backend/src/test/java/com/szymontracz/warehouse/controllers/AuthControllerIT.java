@@ -1,13 +1,9 @@
 package com.szymontracz.warehouse.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.szymontracz.warehouse.dtos.CredentialsDto;
-import com.szymontracz.warehouse.dtos.UserDto;
 import com.szymontracz.warehouse.entities.User;
-import com.szymontracz.warehouse.exceptions.BadArgumentsException;
-import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
 import com.szymontracz.warehouse.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.szymontracz.warehouse.controllers.AuthController.loginPath;
 import static com.szymontracz.warehouse.controllers.AuthController.registerPath;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
