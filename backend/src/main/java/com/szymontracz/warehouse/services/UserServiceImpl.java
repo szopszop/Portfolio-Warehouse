@@ -7,11 +7,8 @@ import com.szymontracz.warehouse.exceptions.AppException;
 import com.szymontracz.warehouse.exceptions.BadArgumentsException;
 import com.szymontracz.warehouse.exceptions.ResourceNotFoundException;
 import com.szymontracz.warehouse.mappers.UserMapper;
-import com.szymontracz.warehouse.repositories.TokenRepository;
 import com.szymontracz.warehouse.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,10 +27,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final TokenRepository tokenRepository;
-    private final EmailService emailService;
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public UserDto login(CredentialsDto credentialsDto) {
