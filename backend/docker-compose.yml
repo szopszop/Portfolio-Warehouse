@@ -5,12 +5,12 @@ services:
     build:
       context: .
     environment:
-      POSTGRES_PASSWORD: compose-postgres
-      POSTGRES_USER: compose-postgres
+      POSTGRES_PASSWORD: composepostgres
+      POSTGRES_USER: composepostgres
     healthcheck:
       test:
         - CMD-SHELL
-        - pg_isready -U compose-postgres
+        - pg_isready -U composepostgres
       timeout: 5s
       interval: 10s
       retries: 5
@@ -29,9 +29,9 @@ services:
       APPSICK_JWTCOOKIENAME: portfolio-warehouse
       APPSICK_JWTEXPIRATIONMS: 11160000
       APPSICK_JWTSECRET: JWT_SECRET
-      SPRING_DATASOURCE_PASSWORD: compose-postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://portfolio-warehouse-db:5432/compose-postgres
-      SPRING_DATASOURCE_USERNAME: compose-postgres
+      SPRING_DATASOURCE_PASSWORD: composepostgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://portfolio-warehouse-db:5432/composepostgres
+      SPRING_DATASOURCE_USERNAME: composepostgres
       SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
       SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect

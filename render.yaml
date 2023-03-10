@@ -12,8 +12,8 @@ services:
 databases:
   - name: portfolio-warehouse-db
     plan: free
-    databaseName: compose-postgres
-    user: compose-postgres
+    databaseName: composepostgres
+    user: composepostgres
     ipAllowList: [ ] # only allow internal connections
     postgresMajorVersion: 14
 
