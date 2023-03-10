@@ -1,0 +1,52 @@
+name: backend
+services:
+  portfolio-warehouse-db:
+    container_name: portfolio-warehouse-db
+    environment:
+      POSTGRES_PASSWORD: compose-postgres
+      POSTGRES_USER: compose-postgres
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U compose-postgres
+      timeout: 5s
+      interval: 10s
+      retries: 5
+    image: postgres:13.9-alpine
+    networks:
+      default: null
+    ports:
+      - target: 5432
+        published: 5432
+  portfolio-warehouse:
+    container_name: portfolio-warehouse
+    depends_on:
+      portfolio-warehouse-db:
+        condition: service_healthy
+    environment:
+      APPSICK_JWTCOOKIENAME: portfolio-warehouse
+      APPSICK_JWTEXPIRATIONMS: 11160000
+      APPSICK_JWTSECRET: JWT_SECRET
+      SPRING_DATASOURCE_PASSWORD: compose-postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://portfolio-warehouse-db:5432/compose-postgres
+      SPRING_DATASOURCE_USERNAME: compose-postgres
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_MAIL_HOST: SMTP_MAIL_HOST
+      SPRING_MAIL_PASSWORD: SMTP_MAIL_PASS
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+      SPRING_MAIL_USERNAME: SMTP_MAIL_USER
+      SPRING_SQL_INIT_MODE: always
+      WAREHOUSE_JWTSECRET: 00882740fdc11cefecab5fcb2b26cb0a6840fe66c8ee81585c45f321f54bd22c
+    image: szopszop/portfolio-warehouse:latest
+    networks:
+      default: null
+    ports:
+      - target: 8080
+        published: 8080
+networks:
+  default:
+    name: backend_default

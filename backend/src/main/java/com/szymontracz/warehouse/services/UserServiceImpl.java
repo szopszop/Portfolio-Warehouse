@@ -19,8 +19,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Value("${confirmation.url}")
-    private String CONFIRMATION_URL;
+//    @Value("${confirmation.url}")
+//    private String CONFIRMATION_URL;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

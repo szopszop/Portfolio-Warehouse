@@ -3,10 +3,7 @@ package com.szymontracz.warehouse.entities;
 import com.szymontracz.warehouse.podam.URLStringStrategy;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import uk.co.jemos.podam.common.PodamStrategyValue;
 
@@ -17,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "images")
+@Table(name = "image")
+@ToString(exclude = "user")
 public class Image {
 
     @Id
