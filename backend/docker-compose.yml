@@ -2,6 +2,8 @@ name: backend
 services:
   portfolio-warehouse-db:
     container_name: portfolio-warehouse-db
+    build:
+      context: .
     environment:
       POSTGRES_PASSWORD: compose-postgres
       POSTGRES_USER: compose-postgres

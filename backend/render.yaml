@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: portfolio-warehouse
+    env: docker
+    repo: https://github.com/szopszop/Portfolio-Warehouse.git
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - fromGroup: portfolio-warehouse-env-group
+
+databases:
+  - name: portfolio-warehouse-db
+    plan: free
+    databaseName: compose-postgres
+    user: compose-postgres
+    ipAllowList: [ ] # only allow internal connections
+    postgresMajorVersion: 14
+
+envVarGroups:
+  - name: portfolio-warehouse-env-group
+    envVars:
+      - key: APPSICK_JWTCOOKIENAME
+        sync: false
+      - key: APPSICK_JWTEXPIRATIONMS
+        sync: false
+      - key: APPSICK_JWTSECRET
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION
+        sync: false
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        sync: false
+      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        sync: false
+      - key: SPRING_MAIL_HOST
+        sync: false
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_MAIL_HOST
+        sync: false
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+      - key: SPRING_MAIL_PORT
+        sync: false
+      - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH
+        sync: false
+      - key: SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE
+        sync: false
+      - key: SPRING_MAIL_USERNAME
+        sync: false
+      - key: SPRING_SQL_INIT_MODE
+        sync: false
+      - key: WAREHOUSE_JWTSECRET
+        sync: false
