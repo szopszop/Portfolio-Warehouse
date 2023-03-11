@@ -26,9 +26,8 @@ services:
       portfolio-warehouse-db:
         condition: service_healthy
     environment:
-      APPSICK_JWTCOOKIENAME: portfolio-warehouse
-      APPSICK_JWTEXPIRATIONMS: 11160000
-      APPSICK_JWTSECRET: JWT_SECRET
+      WAREHOUSE_JWTCOOKIENAME: portfolio-warehouse
+      WAREHOUSE_JWTEXPIRATIONMS: 11160000
       SPRING_DATASOURCE_PASSWORD: composepostgres
       SPRING_DATASOURCE_URL: jdbc:postgresql://portfolio-warehouse-db:5432/composepostgres
       SPRING_DATASOURCE_USERNAME: composepostgres

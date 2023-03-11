@@ -20,11 +20,9 @@ databases:
 envVarGroups:
   - name: portfolio-warehouse-env-group
     envVars:
-      - key: APPSICK_JWTCOOKIENAME
+      - key: WAREHOUSE_JWTCOOKIENAME
         sync: false
-      - key: APPSICK_JWTEXPIRATIONMS
-        sync: false
-      - key: APPSICK_JWTSECRET
+      - key: WAREHOUSE_JWTEXPIRATIONMS
         sync: false
       - key: SPRING_DATASOURCE_PASSWORD
         sync: false
@@ -37,12 +35,6 @@ envVarGroups:
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         sync: false
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
-        sync: false
-      - key: SPRING_MAIL_HOST
-        sync: false
-      - key: SPRING_MAIL_PASSWORD
-        sync: false
-      - key: SPRING_DATASOURCE_USERNAME
         sync: false
       - key: SPRING_MAIL_HOST
         sync: false
