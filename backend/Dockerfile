@@ -9,4 +9,4 @@ COPY --from=maven-builder app/target/Portfolio-Warehouse-0.0.1-SNAPSHOT.jar /app
 WORKDIR /app-service
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","Portfolio-Warehouse-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-Dspring-boot.run.profiles=prod -jar","Portfolio-Warehouse-0.0.1-SNAPSHOT.jar"]
